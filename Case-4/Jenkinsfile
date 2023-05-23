@@ -16,7 +16,7 @@ pipeline{
          stage("deply-project-docker"){
             steps{
                sh "sudo docker run -itdp 8084:8080 --name gc tomcat:9.0"
-               sh "sudo docker cp /mnt/s1/workspace/test/gfl/gameoflife-web/target/gameoflife.war  gc:/usr/local/tomcat/webapps/"
+               sh "sudo docker cp /mnt/s1/workspace/test/gfl/gameoflife-web/target/gameoflife.war  ."
                
             }
         }
