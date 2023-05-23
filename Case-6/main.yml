@@ -1,0 +1,45 @@
+--- #my playbook
+- hosts: dev
+  user: ron
+  become: yes
+  gather_facts: yes
+  connection: ssh
+  vars:
+    tomcat_url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.zip
+    src_path: /mnt/game-of-life/gameoflife-web/target/gameoflife.war
+    des_path: /mnt/apache-tomcat-9.0.72/webapps/
+    pkgname: java-1.8.0-openjdk.x86_64
+    temp_cmd: unzip /mnt/apache-tomcat-9.0.72.zip
+    destiny: /mnt/
+
+  tasks:
+    - name: install java
+      action: yum pkg="{{pkgname}}" state=present
+
+    - name: Download tomcat
+      action: get_url url="{{tomcat_url}}" dest="{{destiny}}"
+
+    - name: unzip tomact
+      ansible.builtin.shell:
+        chdir: "{{destiny}}"
+        cmd: unzip apache-tomcat-9.0.72.zip
+
+    - name: deploy war file
+      action: copy src="{{src_path}}" dest="{{des_path}}"
+
+    - name: deleting zip file
+      ansible.builtin.shell:
+        chdir: "{{destiny}}"
+        cmd: "rm -rf *.zip"
+
+    - name: exc permission
+      ansible.builtin.shell:
+        chdir: "{{destiny}}"
+        cmd: "sudo chmod -R 777 /mnt/"
+      notify: start service
+
+  handlers:
+    - name: start service
+      ansible.builtin.shell:
+        chdir: /mnt/apache-tomcat-9.0.72/bin/
+        cmd: "sudo ./startup.sh"

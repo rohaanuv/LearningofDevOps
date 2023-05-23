@@ -1,0 +1,26 @@
+pipeline {  
+    agent {
+    	label "s1"
+    	} 
+    stages {  
+            stage ('build') {  
+            	 steps { 
+                 
+                   sh '''
+                  git clone https://github.com/rohaanuv/bach-pro.git /var/www/html/
+        
+                	'''
+                }
+            }  
+            stage ('restart-service') {  
+            	 steps { 
+                 
+                   sh ''' 
+                	sudo service httpd restart
+                	'''
+                }
+            }  
+    }  
+}  
+     
+  

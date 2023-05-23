@@ -1,0 +1,28 @@
+pipeline{
+    agent any
+    stages{
+        
+        stage("building-project"){
+            steps{
+               sh "sudo git clone https://github.com/rohaanuv/game-of-life.git"
+               sh '''cd game-of-life/
+               sudo mvn clean install
+               '''
+            }
+        }
+        
+         stage("deply-yml"){
+             agent {
+        label{
+           label "built-in"
+				customWorkspace "/mnt/game-of-life/"
+        }
+    }
+            steps{               
+              sh '''sudo su -c "ansible-playbook main.yml" ron'''
+                
+            }
+        }
+
+    }
+}

@@ -1,0 +1,22 @@
+pipeline {
+    agent {
+        label {
+            label "built-in"
+            customWorkspace "/mnt/JavaAuthApps/"
+        }
+    }
+    stages {
+        stage ('bulding pro'){
+       	steps {						
+				sh "mvn clean install"			
+			}		
+		}
+    }
+    stage('mvwar'){
+          
+	    steps {						
+			    	sh "mv  /apache-tomcat-9.0.72/webapps/ "
+		}
+    }
+        
+}

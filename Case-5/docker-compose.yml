@@ -1,0 +1,30 @@
+version: "3"
+services:
+  app:
+    container_name: auth-server
+    restart: always
+    build: .
+    ports:
+      - 80:8080
+    depends_on:
+      - db
+    external_links:
+      - db
+    environment:
+      - MYSQL_HOST=db
+
+  db:
+    container_name: mysql
+    restart: always
+    image: mysql:5.7.41
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=test1234
+      - MYSQL_DATABASE=test
+    ports:
+      - 3306:3306
+    volumes:
+      - /mnt/mydb/:/var/lib/mysql
+#docker exec -it mysql bash
+#chmod -R 777 /var/lib/mysql

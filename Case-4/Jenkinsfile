@@ -1,0 +1,25 @@
+pipeline{
+    agent {
+        label "s1"
+    }
+    stages{
+        
+        stage("building-project"){
+            steps{
+               sh "sudo git clone https://github.com/rohaanuv/game-of-life.git gfl"
+               sh '''cd gfl
+               pwd
+               sudo mvn clean install
+               '''
+            }
+        }
+         stage("deply-project-docker"){
+            steps{
+               sh "sudo docker run -itdp 8084:8080 --name gc tomcat:9.0"
+               sh "sudo docker cp /mnt/s1/workspace/test/gfl/gameoflife-web/target/gameoflife.war  gc:/usr/local/tomcat/webapps/"
+               
+            }
+        }
+
+    }
+}
