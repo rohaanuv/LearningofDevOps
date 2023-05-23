@@ -1,0 +1,1 @@
+Deploy application on different instances and multiple containers using ansible & Docker maintain the CI/CD pipeline. 
