@@ -1,0 +1,1 @@
+Write the jenkins declarative pipeline that deploy application on server.
